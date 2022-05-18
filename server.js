@@ -53,6 +53,7 @@ function init() {
                 return ;
             }
             else if (data.startSelect === 'Exit'){
+                console.log("Bye!");
                 process.exit();
             }
         }
