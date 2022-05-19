@@ -129,7 +129,7 @@ function addRole() {
             let deptId = 0;
             for (i=0; i<res.length; i++) {
                 if (data.roleDepartment === res[i].name){
-                    deptId = results[i].id
+                    deptId = res[i].id
                 }
             }
             db.query('INSERT INTO roles (title,salary,department_id) VALUES (?,?,?)', [data.roleName, data.roleSalary, deptId], (err, res) => {
@@ -213,18 +213,18 @@ function addEmployee() {
 function roleUpdate() {
     const employeeArray = [];
 
-    db.query('SELECT first_name, last_name FROM employee', (err, result) => {
-        for (i = 0; i < result.length; i++) {
-            let name = result[i].first_name + ' ' + result[i].last_name;
+    db.query('SELECT first_name, last_name FROM employee', (err, res) => {
+        for (i = 0; i < res.length; i++) {
+            let name = res[i].first_name + ' ' + res[i].last_name;
             employeeArray.push(name)
             
         }
     });
     const roleArray = [];
     
-    db.query('SELECT * FROM roles', (err, result) => {
-        for (i = 0; i < result.length; i++) {
-            roleArray.push(result[i].title)
+    db.query('SELECT * FROM roles', (err, res) => {
+        for (i = 0; i < res.length; i++) {
+            roleArray.push(res[i].title)
         }
     });
     
@@ -232,15 +232,15 @@ function roleUpdate() {
     .prompt([
         {
             type: 'list',
-            message: 'What is their new role?',
-            name: 'role',
-            choices: roleArray
-        },
-        {
-            type: 'list',
             message: 'Which employee needs their role amended?',
             name: 'name',
             choices: employeeArray
+        },
+        {
+            type: 'list',
+            message: 'What is their new role?',
+            name: 'role',
+            choices: roleArray
         }
         
     ])
