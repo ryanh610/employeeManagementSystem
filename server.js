@@ -85,27 +85,25 @@ function viewEmployees() {
 };
 
 function addDepartment() {
-    const departmentQuestion = [{
-        type: 'input',
-        name: 'deptName',
-        message: 'Please enter the name of the new department.'
-    }];
     inquirer
-        .prompt(departmentQuestion)
-        .then((data) => {
-            db.query('INSERT INTO department (name) VALUES (?)', [data.departmentName], (err, result) => {
-                console.log(data.departmentName);
-                init();
-            })
+    .prompt([{
+        type: 'input',
+        name: 'departmentName',
+        message: 'Please enter the name of the new department.'
+    }])
+    .then((data) => {
+        db.query('INSERT INTO department (name) VALUES (?)', [data.departmentName], (err, result) => {
+            console.log(data.departmentName);
+            init();
         })
+    })
 };
 
 function addRole() {
     const departmentArray = [];
-    
-    db.query('SELECT * FROM department', (err, result) => {
-        for (i = 0; i < result.length; i++) {
-            departmentArray.push(result[i].name)
+    db.query('SELECT * FROM department', (err, res) => {
+        for (i = 0; i < res.length; i++) {
+            departmentArray.push(res[i].name)
         }
     });
     inquirer
@@ -127,15 +125,15 @@ function addRole() {
         }
     ])
     .then((data) => {
-        db.query('SELECT * FROM department', (err, results) => {
+        db.query('SELECT * FROM department', (err, res) => {
             let deptId = 0;
-            for (i=0; i<results.length; i++) {
-                if (data.roleDept === results[i].name){
+            for (i=0; i<res.length; i++) {
+                if (data.roleDepartment === res[i].name){
                     deptId = results[i].id
                 }
             }
-            db.query('INSERT INTO roles (title,salary,department_id) VALUES (?,?,?)', [data.roleName, data.roleSalary, deptId], (err, result) => {
-                console.log('New role added.');
+            db.query('INSERT INTO roles (title,salary,department_id) VALUES (?,?,?)', [data.roleName, data.roleSalary, deptId], (err, res) => {
+                console.log('New role added!');
                 console.log(data.roleName, data.roleSalary, deptId);
                 init();
             })
